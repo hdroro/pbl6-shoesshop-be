@@ -1,8 +1,11 @@
-const httpStatus = require("http-status");
-const { User } = require("../models");
-const ApiError = require("../utils/ApiError");
-var bcrypt = require('bcryptjs');
-require("dotenv").config();
+import httpStatus from "http-status";
+import db from "../models/index.js";
+import ApiError from "../utils/ApiError.js";
+import bcrypt from 'bcryptjs';
+import dotenv from "dotenv";
+dotenv.config();
+
+const { User } = db;
 
 const isPasswordMatch = async function (password, hashPassword) {
   return bcrypt.compare(password, hashPassword);
@@ -38,4 +41,4 @@ const refreshAuth = async (refreshToken) => {
   }
 };
 
-module.exports = { login, logout, refreshAuth };
+export default { login, logout, refreshAuth };

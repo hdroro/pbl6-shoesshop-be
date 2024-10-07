@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const fluctuationPriceHistory = sequelize.define('fluctuationPriceHistory', {
     id: DataTypes.UUID,
     productAttributeId: DataTypes.STRING,

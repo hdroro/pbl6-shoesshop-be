@@ -1,8 +1,10 @@
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
-const config = require('../config/config');
-const { Token } = require('../models');
-const { tokenTypes } = require('../config/tokens');
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
+import config from '../config/config.js';
+import db from '../models/index.js';
+import tokenTypes from '../config/tokens.js';
+
+const { Token }= db;
 
 const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   const payload = {
@@ -73,7 +75,7 @@ const generateVerifyEmailToken = async (user) => {
   return verifyEmailToken;
 };
 
-module.exports = {
+export default {
   generateToken,
   saveToken,
   verifyToken,

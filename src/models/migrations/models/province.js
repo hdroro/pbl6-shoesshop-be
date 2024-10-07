@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const province = sequelize.define('province', {
     id: DataTypes.UUID,
     name: DataTypes.STRING

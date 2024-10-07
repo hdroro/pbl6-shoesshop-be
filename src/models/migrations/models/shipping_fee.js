@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const shippingFee = sequelize.define('shippingFee', {
     id: DataTypes.UUID,
     provinceId: DataTypes.INTEGER,

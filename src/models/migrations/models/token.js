@@ -1,8 +1,8 @@
 'use strict';
 
-const { tokenTypes } = require("../../../config/tokens");
+import tokenTypes from "../../../config/tokens.js";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const token = sequelize.define('token', {
     id: {
       allowNull: false,

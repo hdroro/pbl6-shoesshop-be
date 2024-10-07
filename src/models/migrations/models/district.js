@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const district = sequelize.define('district', {
     id: DataTypes.INTEGER,
     name: DataTypes.STRING,

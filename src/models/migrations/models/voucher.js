@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const voucher = sequelize.define('voucher', {
     id: DataTypes.UUID,
     name: DataTypes.STRING,

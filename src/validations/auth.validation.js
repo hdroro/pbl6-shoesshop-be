@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const login = {
   body: Joi.object().keys({
@@ -13,7 +13,7 @@ const refreshTokens = {
   }),
 };
 
-module.exports = {
+export default {
   login,
   refreshTokens,
 };

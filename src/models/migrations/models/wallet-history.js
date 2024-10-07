@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const walletHistory = sequelize.define('walletHistory', {
     id: DataTypes.UUID,
     walletId: DataTypes.UUID,

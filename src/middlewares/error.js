@@ -1,6 +1,3 @@
-const httpStatus = require("http-status");
-const ApiError = require("../utils/ApiError");
-
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
   res.locals.errorMessage = err.message;
@@ -13,6 +10,4 @@ const errorHandler = (err, req, res, next) => {
 };
 
 
-module.exports = {
-  errorHandler,
-};
+export default errorHandler;

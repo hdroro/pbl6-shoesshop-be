@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const cartItem = sequelize.define('cartItem', {
     id: DataTypes.UUID,
     cartId: DataTypes.STRING,

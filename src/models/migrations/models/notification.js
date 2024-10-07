@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const notification = sequelize.define('notification', {
     id: DataTypes.UUID,
     title: DataTypes.STRING,

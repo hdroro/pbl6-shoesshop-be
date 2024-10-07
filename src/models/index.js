@@ -1,9 +1,12 @@
-const Sequelize = require('sequelize');
-const sequelize = require('./configs/sequelizeConnection'); 
+import Sequelize from 'sequelize';
+import sequelize from './configs/sequelizeConnection.js'; 
 
 const db = {};
 
-db.User = require('./migrations/models/user')(sequelize, Sequelize.DataTypes);
-db.Token = require('./migrations/models/token')(sequelize, Sequelize.DataTypes);
+import userModel from './migrations/models/user.js';
+import tokenModel from './migrations/models/token.js';
 
-module.exports = db;
+db.User = userModel(sequelize, Sequelize.DataTypes);
+db.Token = tokenModel(sequelize, Sequelize.DataTypes);
+
+export default db;

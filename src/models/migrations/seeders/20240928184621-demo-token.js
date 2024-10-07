@@ -1,7 +1,7 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
-module.exports = {
+export default {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('roles', [{
       id: 'bde663b0-ef37-4c1d-9c73-6326b566446d',

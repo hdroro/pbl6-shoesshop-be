@@ -3,7 +3,7 @@
 const { tokenTypes } = require('../../../config/tokens');
 
 /** @type {import('sequelize-cli').Migration} */
-module.exports = {
+export default {
   async up(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable('tokens', {

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const commune = sequelize.define('commune', {
     id: DataTypes.INTEGER,
     name: DataTypes.STRING,

@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const address = sequelize.define('address', {
     id: DataTypes.UUID,
     userId: DataTypes.STRING,
