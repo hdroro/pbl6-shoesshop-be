@@ -1,12 +1,11 @@
 import httpStatus from 'http-status';
-import db from "../models/index.js";
+import db from "../models/models/index.js";
 import ApiError from '../utils/ApiError.js';
 import paginate from './plugins/paginate.plugin.js';
-
-const { User } = db;
+import { UUIDV4 } from 'sequelize';
 
 const isEmailTaken = async (email, excludeUserId) => {
-  const user = await User.findOne({
+  const user = await db.user.findOne({
     where: {
       email: email,
       id: { [Sequelize.Op.ne]: excludeUserId }
@@ -19,7 +18,8 @@ const createUser = async (userBody) => {
   if (await isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return User.create(userBody);
+  const id = UUIDV4();
+  return User.create({ id, ...userBody });
 };
 
 const queryUsers = async (filter, options) => {
@@ -28,11 +28,11 @@ const queryUsers = async (filter, options) => {
 };
 
 const getUserById = async (id) => {
-  return User.findById(id);
+  return db.user.findByPk(id);
 };
 
 const getUserByEmail = async (email) => {
-  return User.findOne({ email });
+  return db.user.findOne({ email });
 };
 
 const updateUserById = async (userId, updateBody) => {
