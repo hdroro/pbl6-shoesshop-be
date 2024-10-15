@@ -24,7 +24,7 @@ const envVarsSchema = Joi.object()
     DB_PORT: Joi.string().description('database port of your database'),
     DB_NAME: Joi.string().description('database name of your database'),
     DB_USER: Joi.string().description('database user of your database'),
-    DB_PASSWORD: Joi.string().description('database password of your database')
+    DB_PASSWORD: Joi.string().optional().description('database password of your database')
   })
   .unknown();
 
