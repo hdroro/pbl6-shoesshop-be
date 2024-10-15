@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import { Gender } from '../utils/enum.js'
 
-const phoneNumberPattern = new RegExp(/^[0-9]{10}$/);
 const passwordPattern = new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~`-])(?=.*[a-zA-Z]).{8,}$/);
 
 const register = {
