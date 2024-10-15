@@ -25,4 +25,11 @@ router.delete(
     staffController.deleteStaff
 );
 
+router.patch(
+    "/password",
+    validate(staffValidation.resetPassword),
+    staffController.resetPassword
+);
+
+
 export default router;

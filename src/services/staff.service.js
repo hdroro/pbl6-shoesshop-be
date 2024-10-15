@@ -1,9 +1,12 @@
 import db from "../models/models/index.js";
 import paginate from "./plugins/paginate.plugin.js";
-import { AccountStatus, requestType, UserRole } from "../utils/enum.js";
+import { AccountStatus, passwordDefault, requestType, UserRole } from "../utils/enum.js";
 import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
 import { v4 as UUIDV4 } from 'uuid';
+import bcrypt from 'bcryptjs';
+
+const SALT_ROUNDS = 10;
 
 const getAllStaffs = async (filter, options) => {
     const searchFields = ['firstName', 'lastName', 'email', 'phoneNumber'];
@@ -58,10 +61,30 @@ const requestEditProfile = async (staffBody) => {
     return requestSaved;
 };
 
+const resetPassword = async (groupId, staffBody) => {
+    const staff = await db.user.findOne({ where: { id: groupId.staffId, role: UserRole.STAFF, status: AccountStatus.ACTIVE }});
+    if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
+
+    const admin = await db.user.findOne({ where: { id: groupId.adminId, role: UserRole.ADMIN }});
+    if (!admin) throw new ApiError(httpStatus.NOT_FOUND, 'Admin not found!');
+
+    const isPasswordMatch = await bcrypt.compare(staffBody.adminPassword, admin.password);
+    if (!isPasswordMatch) throw new ApiError(httpStatus.BAD_REQUEST, 'Incorrect password!');
+
+    const newPassword = staffBody.newPassword ?? passwordDefault;
+    const isPasswordNotChange = await bcrypt.compare(newPassword, staff.password);
+    if (isPasswordNotChange) throw new ApiError(httpStatus.BAD_REQUEST, 'Make new password, please!');
+
+    await db.user.update({
+        password: await bcrypt.hash(newPassword, SALT_ROUNDS)
+    }, { where: { id: groupId.staffId }});
+};
+
 export default {
     getAllStaffs,
     getStaffDetail,
     deleteStaff,
-    requestEditProfile
+    requestEditProfile,
+    resetPassword
 };
   

@@ -38,9 +38,21 @@ const requestEditProfile = {
     })
 };
 
+const resetPassword = {
+    query: Joi.object().keys({
+        staffId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+        adminId: Joi.string().guid({ version: ['uuidv4'] }).required()
+    }),
+    body: Joi.object().keys({
+        adminPassword: Joi.string().trim().required(),
+        newPassword: Joi.string().trim().optional(),
+    })
+};
+
 export default {
     getAllStaffs,
     getStaffDetail,
     deleteStaff,
-    requestEditProfile
+    requestEditProfile,
+    resetPassword
 }

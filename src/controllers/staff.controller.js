@@ -26,9 +26,15 @@ const requestEditProfile = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(staffs);
 });
 
+const resetPassword = catchAsync(async (req, res) => {
+  const staffs = await staffServices.resetPassword(pick(req.query, ['staffId', 'adminId']), req.body);
+  res.status(httpStatus.OK).send(staffs);
+});
+
 export default {
   getStaffDetail,
   getAllStaffs,
   deleteStaff,
-  requestEditProfile
+  requestEditProfile,
+  resetPassword
 };
