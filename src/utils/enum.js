@@ -27,3 +27,5 @@ export const requestType = Object.freeze({
     ACCEPTED: 'ACCEPTED',
     REJECTED: 'REJECTED',
 });
+
+export const passwordDefault = "shoesshop";
