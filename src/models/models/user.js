@@ -16,7 +16,9 @@ export default (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
     gender: DataTypes.BOOLEAN,
+    dateOfBirth: DataTypes.DATE,
     role: DataTypes.STRING,
+    status: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   });
@@ -34,6 +36,10 @@ export default (sequelize, DataTypes) => {
       constraints: false
     });
     user.hasOne(db.wallet, {
+      foreignKey: 'userId',
+      constraints: false
+    });
+    user.hasMany(db.request, {
       foreignKey: 'userId',
       constraints: false
     });

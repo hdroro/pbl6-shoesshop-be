@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 
-const paginate = async function (model, filter = {}, options = {}, include = [], searchFields = []) {
+const paginate = async function (model, filter = {}, options = {}, include = [], searchFields = [], attributeInclude = []) {
   const limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 10) : 10;
   const page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1;
   const offset = (page - 1) * limit;
@@ -35,6 +35,7 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
     limit,
     offset,
     order: orderClause,
+    ...(attributeInclude.length >0 ? { attributes: attributeInclude } : {}),
     ...(include.length > 0 ? { include } : {}),
   });
 

@@ -1,6 +1,7 @@
 export const AccountStatus = Object.freeze({
     ACTIVE: 'ACTIVE',
-    INACTIVE: 'INACTIVE'
+    INACTIVE: 'INACTIVE',
+    DELETED: 'DELETED'
 })
 
 export const UserRole = Object.freeze({
@@ -21,3 +22,8 @@ export const tokenTypes = Object.freeze({
     VERIFY_EMAIL: 'verifyEmail',
 });
     
+export const requestType = Object.freeze({
+    PENDING: 'PENDING',
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED',
+});

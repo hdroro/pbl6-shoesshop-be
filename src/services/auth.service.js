@@ -23,7 +23,8 @@ const createUser = async (userData) => {
     ...userData,
     id: UUIDV4(),
     password: await bcrypt.hash(userData.password, SALT_ROUNDS),
-    role: 'CUSTOMER'
+    role: 'CUSTOMER',
+    status: 'INACTIVE'
   });
 
   return savedUser;
@@ -38,7 +39,8 @@ const login = async (userData) => {
       'role',
       'password',
       'firstName',
-      'lastName'
+      'lastName',
+      'status'
     ],
   });
 
