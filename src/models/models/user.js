@@ -43,6 +43,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'userId',
       constraints: false
     });
+    user.hasMany(db.receiptNote, {
+      foreignKey: 'staffId',
+      constraints: false
+    });
   }
   return user;
 };

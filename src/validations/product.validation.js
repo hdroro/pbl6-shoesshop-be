@@ -23,8 +23,15 @@ const getProductDetail = {
     })
 };
 
+const getProductByName = {
+    query: Joi.object().keys({
+        name: Joi.string().trim().required()
+    })
+};
+
 export default {
     getProducts,
     deleteProduct,
-    getProductDetail
+    getProductDetail,
+    getProductByName
 }

@@ -2,6 +2,7 @@ import paginate from './plugins/paginate.plugin.js';
 import db from '../models/models/index.js';
 import ApiError from '../utils/ApiError.js';
 import httpStatus from 'http-status';
+import { Op } from 'sequelize';
 
 const getAllProductsByCondition = async (filter, options) => {
     const include = [{
@@ -89,4 +90,25 @@ const getProductDetail = async (productId) => {
     return transformedProduct;
 };
 
-export default { getAllProductsByCondition, deleteProduct, getProductDetail };
+
+const getProductByName = async (productName) => {
+    const product = await db.product.findAll({
+        where: {
+            name: { [Op.like]: `%${productName}%` },
+            isDeleted: false
+        },
+        attributes: ['name'],
+        include: {
+            model: db.productAttribute,
+            attributes: ['id', 'size', 'color', 'quantity'],
+            where: { isDeleted: false },
+            required: false
+        }
+    });
+
+    if (!product) throw new ApiError(httpStatus.NOT_FOUND, 'Product not found')
+
+    return product;
+}
+
+export default { getAllProductsByCondition, deleteProduct, getProductDetail, getProductByName };

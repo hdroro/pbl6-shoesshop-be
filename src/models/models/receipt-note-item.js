@@ -14,6 +14,9 @@ export default (sequelize, DataTypes) => {
     importPrice: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
+  }, {
+    tableName: 'receipt_note_items',
+    freezeTableName: true,
   });
   receiptNoteItem.associate = (db) => {
     receiptNoteItem.belongsTo(db.receiptNote, {

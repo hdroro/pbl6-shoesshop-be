@@ -12,11 +12,18 @@ export default (sequelize, DataTypes) => {
     staffId: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
+  },{
+    tableName: 'receipt_notes',
+    freezeTableName: true,
   });
   receiptNote.associate = (db) => {
     receiptNote.belongsToMany(db.productAttribute, {
       through: db.receiptNoteItem,
       foreignKey: 'receiptNoteId',
+      constraints: false
+    });
+    receiptNote.belongsTo(db.user, {
+      foreignKey: 'staffId',
       constraints: false
     })
   }

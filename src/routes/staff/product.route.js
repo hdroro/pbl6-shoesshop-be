@@ -1,16 +1,16 @@
 import express from "express";
 import passport from "passport";
-import customerController from "../../controllers/customer.controller.js";
-import customerValidation from "../../validations/customer.validation.js";
+import productController from "../../controllers/product.controller.js";
+import productValidation from "../../validations/product.validation.js";
 import validate from "../../middlewares/validate.js";
 const router = express.Router();
 
 router.use(passport.authenticate("jwt", { session: false }));
 
 router.get(
-  "/",
-  validate(customerValidation.getAllCustomers),
-  customerController.getAllCustomers
+    "/",
+    validate(productValidation.getProductByName),
+    productController.getProductByName
 );
 
 export default router;
