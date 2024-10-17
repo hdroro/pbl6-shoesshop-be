@@ -9,12 +9,20 @@ export default (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     name: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+    appliedDate: {
+      type: DataTypes.DATE,
+      field: 'startDate'
+    },
+    expiredDate: {
+      type: DataTypes.DATE,
+      field: 'endDate'
+    },
     numberOfVouchers: DataTypes.INTEGER,
     voucherType: DataTypes.STRING,
-    minOrderTotal: DataTypes.STRING,
+    minOrderPrice: DataTypes.STRING,
+    maxDiscountPrice: DataTypes.STRING,
     discountValue: DataTypes.STRING,
+    isDeleted: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   });

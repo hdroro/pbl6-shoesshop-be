@@ -6,3 +6,4 @@ export { default as productServices } from './product.service.js';
 export { default as customerServices } from './customer.service.js';
 export { default as requestServices } from './request.service.js';
 export { default as staffServices } from './staff.service.js';
+export { default as voucherServices } from './voucher.service.js';

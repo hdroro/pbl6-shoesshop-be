@@ -4,3 +4,4 @@ export { default as productValidation } from './product.validation.js';
 export { default as customValidation } from './custom.validation.js';
 export { default as requestValidation } from './request.validation.js';
 export { default as staffValidation } from './staff.validation.js';
+export { default as voucherValidation } from './voucher.validation.js';
