@@ -15,7 +15,16 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
         }));
       } else if (key === 'name') {
         whereClause[key] = { [Op.like]: `%${filter[key].trim()}%` };
-      } else {
+      } else if (key === 'fromDate' || key === 'toDate') {
+        whereClause.importDate = whereClause.importDate || {};
+        if (key === 'fromDate' && filter[key]) {
+          whereClause.importDate[Op.gte] = filter[key];
+        }
+        if (key === 'toDate' && filter[key]) {
+          whereClause.importDate[Op.lte] = filter[key];
+        }
+      }
+      else {
         whereClause[key] = filter[key].toString().trim();
       }
     });
@@ -27,7 +36,7 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
     const order = options.order ? options.order.toUpperCase() : 'ASC';
     orderClause.push([sortBy, order]);
   } else {
-    orderClause.push(['id', 'ASC']);
+    orderClause.push(['createdAt', 'ASC']);
   };
 
   const { count, rows } = await model.findAndCountAll({
@@ -35,7 +44,7 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
     limit,
     offset,
     order: orderClause,
-    ...(attributeInclude.length >0 ? { attributes: attributeInclude } : {}),
+    ...(attributeInclude.length > 0 ? { attributes: attributeInclude } : {}),
     ...(include.length > 0 ? { include } : {}),
   });
 

@@ -22,8 +22,14 @@ const getProductDetail = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(products);
 });
 
+const getProductByName = catchAsync(async (req, res) => {
+  const products = await productServices.getProductByName(req.query.name);
+  res.status(httpStatus.OK).send(products);
+});
+
 export default {
   getAllProducts,
   deleteProduct,
-  getProductDetail
+  getProductDetail,
+  getProductByName
 };
