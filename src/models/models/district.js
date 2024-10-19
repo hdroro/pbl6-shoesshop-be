@@ -21,7 +21,11 @@ export default (sequelize, DataTypes) => {
     district.hasMany(db.commune, {
       foreignKey: 'districtId',
       constraints: false
-    })
+    });
+    district.belongsTo(db.address, {
+      foreignKey: 'districtId',
+      constraints: false
+    });
   }
   return district;
 };

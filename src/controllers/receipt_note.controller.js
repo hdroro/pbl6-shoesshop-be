@@ -14,8 +14,8 @@ const getReceiptNoteDetail = catchAsync(async (req, res) => {
   const id = req.params.id;
   const filter = pick(req.query, [ 'name', 'importDate']);
   const options = pick(req.query, ['limit', 'page']);
-  const vouchers = await receiptNoteServices.getReceiptNoteDetail({ ...filter, id }, options);
-  res.status(httpStatus.OK).send(vouchers);
+  const receiptNoteDetail = await receiptNoteServices.getReceiptNoteDetail({ ...filter, id }, options);
+  res.status(httpStatus.OK).send(receiptNoteDetail);
 });
 
 const createNewReceiptNote = catchAsync(async (req, res) => {

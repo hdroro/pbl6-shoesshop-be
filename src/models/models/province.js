@@ -20,7 +20,11 @@ export default (sequelize, DataTypes) => {
     province.hasOne(db.shippingFee, {
       foreignKey: 'provinceId',
       constraints: false
-    })
+    });
+    province.belongsTo(db.address, {
+      foreignKey: 'provinceId',
+      constraints: false
+    });
   }
   return province;
 };

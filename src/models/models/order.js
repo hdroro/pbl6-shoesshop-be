@@ -28,10 +28,7 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'orderId',
       constraints: false
     });
-    order.hasOne(db.address, {
-      foreignKey: 'addressId',
-      constraints: false
-    });
+    order.hasOne(db.address);
     order.hasMany(db.orderStatusHistory, {
       foreignKey: 'orderId',
       constraints: false

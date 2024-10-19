@@ -14,6 +14,10 @@ export default (sequelize, DataTypes) => {
     sellingPrice: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
+  },
+  {
+    tableName: 'order_items',
+    freezeTableName: true,
   });
   orderItem.associate = (db) => {
     orderItem.belongsTo(db.order, {
