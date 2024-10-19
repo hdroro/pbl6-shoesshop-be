@@ -1,6 +1,6 @@
 import db from "../models/models/index.js";
 import paginate from "./plugins/paginate.plugin.js";
-import { UserRole } from "../utils/enum.js";
+import { AccountStatus, UserRole } from "../utils/enum.js";
 import { Op } from "sequelize";
 import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
@@ -19,7 +19,7 @@ const getAllReceiptNotes = async (filter, options) => {
                         { lastName: { [Op.iLike]: `%${filter.name?.trim() || ''}%` } }
                     ]
                 },
-                { role: UserRole.STAFF }
+                { role: UserRole.STAFF, status: { [Op.ne]:  AccountStatus.DELETED } }
             ]
         }
     }];

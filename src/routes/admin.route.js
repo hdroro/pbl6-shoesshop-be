@@ -6,8 +6,12 @@ import customerRoute from "./staff/customer.route.js";
 import requestRoute from "./admin/request.route.js";
 import staffRoute from "./admin/staff.route.js";
 import voucherRoute from "./admin/voucher.route.js";
+import { isAdmin } from "../middlewares/authorization.js";
+import passport from "passport";
 
 const router = express.Router();
+router.use(passport.authenticate("jwt", { session: false }));
+router.use(isAdmin);
 
 router.use("/categories", categoryRoute);
 router.use("/products", productRoute);

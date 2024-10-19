@@ -18,6 +18,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'districtId',
       constraints: false
     });
+    commune.belongsTo(db.address, {
+      foreignKey: 'communeId',
+      constraints: false
+    });
   }
   return commune;
 };

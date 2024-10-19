@@ -18,8 +18,20 @@ export default (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE
   });
   address.associate = (db) => {
-    address.belongsTo(db.order, {
-      foreignKey: 'orderId',
+    address.belongsTo(db.order,{
+      foreignKey: 'addressId',
+      constraints: false
+    });
+    address.hasMany(db.province, {
+      foreignKey: 'provinceId',
+      constraints: false
+    });
+    address.hasMany(db.district, {
+      foreignKey: 'districtId',
+      constraints: false
+    });
+    address.hasMany(db.commune, {
+      foreignKey: 'communeId',
       constraints: false
     });
   }

@@ -37,7 +37,7 @@ const getStaffDetail = async (staffId) => {
 };
 
 const deleteStaff = async (staffId) => {
-    const staff = await db.user.findOne({ where: { id: staffId, role: UserRole.STAFF }});
+    const staff = await db.user.findOne({ where: { id: staffId, role: UserRole.STAFF, status: { [Op.ne]:  AccountStatus.DELETED } }});
     if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
     if (staff.status === AccountStatus.DELETED) throw new ApiError(httpStatus.BAD_REQUEST, 'Staff already deleted');
 
@@ -46,7 +46,7 @@ const deleteStaff = async (staffId) => {
 };
 
 const requestEditProfile = async (staffBody) => {
-    const staff = await db.user.findOne({ where: { id: staffBody.id, role: UserRole.STAFF, status: AccountStatus.ACTIVE }});
+    const staff = await db.user.findOne({ where: { id: staffBody.id, role: UserRole.STAFF, status: { [Op.ne]: AccountStatus.DELETED } } });
     if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
 
     const request = await db.request.findOne({ where: { userId: staffBody.id, status: requestType.PENDING }});
