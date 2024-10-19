@@ -38,8 +38,10 @@ const getAllOrders = async (filter, options) => {
 const getOrderDetail = async (id, options) => {
   const order = await db.order.findByPk(id);
   if (!order) throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
-  
-  const orderDetail = db.order.findAll({
+
+  const orderDetail = await db.order.findOne({
+    attributes: ['orderDate', 'currentStatus', 'priceTotal', 'finalPrice', 'walletMoneyUsed'],
+    where: { id },
     include: [
       {
         model: db.user,
@@ -49,32 +51,60 @@ const getOrderDetail = async (id, options) => {
         model: db.address,
         attributes: ['phoneNumberOrder', 'addressDetail'],
         include: [
-          {
-            model: db.province,
-            attributes: ['name'],
-          },
-          {
-            model: db.district,
-            attributes: ['name']
-          },
-          {
-            model: db.commune,
-            attributes: ['name']
-          }
-        ]
+          { model: db.province, attributes: ['name'] },
+          { model: db.district, attributes: ['name'] },
+          { model: db.commune, attributes: ['name'] },
+        ],
       },
       {
         model: db.orderItem,
-        attributes: ['quantity', 'sellingPrice']
+        attributes: ['quantity', 'sellingPrice'],
+        include: {
+          model: db.productAttribute,
+          attributes: ['size', 'color'],
+          where: { isDeleted: false },
+          include: { model: db.product, attributes: ['name'] },
+        },
       },
       {
         model: db.orderStatusHistory,
-        attributes: ['changeDate']
-      }
-    ]
+        attributes: ['changeDate', 'status'],
+        order: [['changeDate', 'DESC']],
+      },
+    ],
   });
 
-  return orderDetail;
+  const response = {
+    orderDate: orderDetail.orderDate,
+    currentStatus: orderDetail.currentStatus,
+    priceTotal: orderDetail.priceTotal,
+    finalPrice: orderDetail.finalPrice,
+    walletMoneyUsed: orderDetail.walletMoneyUsed,
+    ...orderDetail.user && {
+      firstName: orderDetail.user.firstName,
+      lastName: orderDetail.user.lastName,
+    },
+    ...orderDetail.address && {
+      phoneNumberOrder: orderDetail.address.phoneNumberOrder,
+      addressDetail: orderDetail.address.addressDetail,
+      provinceName: orderDetail.address.province.name,
+      districtName: orderDetail.address.district.name,
+      communeName: orderDetail.address.commune.name,
+    },
+    orderItems: orderDetail.orderItems.map(item => ({
+      quantity: item.quantity,
+      sellingPrice: item.sellingPrice,
+      size: item.productAttribute.size,
+      color: item.productAttribute.color,
+      productName: item.productAttribute.product.name,
+    })),
+    orderStatusHistories: orderDetail.orderStatusHistories.map(history => ({
+      changeDate: history.changeDate,
+      status: history.status,
+    })),
+  };
+
+  return response;
 };
 
 

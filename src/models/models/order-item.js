@@ -23,7 +23,11 @@ export default (sequelize, DataTypes) => {
     orderItem.belongsTo(db.order, {
       foreignKey: 'orderId',
       constraints: false
-    })
+    });
+    orderItem.belongsTo(db.productAttribute, {
+      foreignKey: 'productAttributeId',
+      constraints: false
+    });
   }
   return orderItem;
 };

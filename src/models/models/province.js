@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'provinceId',
       constraints: false
     });
-    province.belongsTo(db.address, {
+    province.hasOne(db.address, {
       foreignKey: 'provinceId',
       constraints: false
     });

@@ -29,6 +29,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'productAttributeId',
       constraints: false
     });
+    productAttribute.hasMany(db.orderItem, {
+      foreignKey: 'productAttributeId',
+      constraints: false
+    });
   }
   return productAttribute;
 };
