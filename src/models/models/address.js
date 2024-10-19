@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
     },
     userId: DataTypes.STRING,
     provinceId: DataTypes.INTEGER,
+    districtId: DataTypes.INTEGER,
     communeId: DataTypes.INTEGER,
     addressDetail: DataTypes.STRING,
     phoneNumberOrder: DataTypes.STRING,
@@ -18,22 +19,23 @@ export default (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE
   });
   address.associate = (db) => {
-    address.belongsTo(db.order,{
-      foreignKey: 'addressId',
+    address.belongsTo(db.user, {
+      foreignKey: 'userId',
       constraints: false
     });
-    address.hasMany(db.province, {
+    address.belongsTo(db.province, {
       foreignKey: 'provinceId',
       constraints: false
     });
-    address.hasMany(db.district, {
+    address.belongsTo(db.district, {
       foreignKey: 'districtId',
       constraints: false
     });
-    address.hasMany(db.commune, {
+    address.belongsTo(db.commune, {
       foreignKey: 'communeId',
       constraints: false
     });
-  }
+  };
+
   return address;
 };

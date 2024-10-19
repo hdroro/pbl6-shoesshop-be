@@ -29,15 +29,39 @@ const getAllCategories = async (filter, options) => {
     return categories;
 }
 
-const editCategory = async (categoryId, categoryBody) => {
-    const currentCategory = await db.category.findOne({ where: { id: categoryId } });
+const editCategory = async (req) => {
+    const {categoryId} = req.params
+    const {name, description} = req.body
+    const currentCategory = await db.category.findOne({ where: { id: categoryId, isDeleted: false } });
+    if (!currentCategory) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Category does not exist");
+    }
+    if (name !== undefined) {
+        const trimmedName = name.trim();
+        if (trimmedName !== currentCategory.name) {
+            const existingCategory = await db.category.findOne({
+                where: {
+                    name: trimmedName,
+                    isDeleted: false
+                }
+            });
 
-    if (!currentCategory) throw new ApiError(httpStatus.BAD_REQUEST, 'Category not found');
+            if (existingCategory) {
+                throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "This category already taken");
+            }
+        }
+    }
+    const categoryUpdated = await db.category.update(
+        { 
+            name: name !== undefined ? name.trim() : currentCategory.name,
+            description: description !== undefined ? description.trim() : currentCategory.description
+        },
+        { 
+            where: { id: categoryId } 
+        }
+    );
 
-    if (await db.category.findOne({ where: { name: categoryBody.name, isDeleted: false } })) throw new ApiError(httpStatus.BAD_REQUEST, 'Category already taken');
-    const updatedCategory = await currentCategory.update(categoryBody);
-
-    return updatedCategory;
+    return categoryUpdated;
 };
 
 

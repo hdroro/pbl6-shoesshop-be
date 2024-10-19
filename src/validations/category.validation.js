@@ -28,8 +28,8 @@ const editCategory = {
     categoryId: Joi.string().guid({ version: ['uuidv4'] }).required()
   }),
   body: Joi.object().keys({
-    name: Joi.string().required(),
-    description: Joi.string().trim().allow('').optional(),
+    name: Joi.string().trim().optional(),
+    description: Joi.string().trim().optional()
   })
 };
 

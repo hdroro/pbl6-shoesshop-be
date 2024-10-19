@@ -23,8 +23,8 @@ const getAllCategories = catchAsync(async (req, res) => {
 });
 
 const editCategory = catchAsync(async (req, res) => {
-  const category = await categoryServices.editCategory(req.params.categoryId, req.body);
-  res.status(httpStatus.OK).send(category);
+  await categoryServices.editCategory(req);
+  res.status(httpStatus.OK).send({ message: "Update category successfully"});
 });
 
 export default {

@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'districtId',
       constraints: false
     });
-    commune.belongsTo(db.address, {
+    commune.hasOne(db.address, {
       foreignKey: 'communeId',
       constraints: false
     });

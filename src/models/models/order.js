@@ -9,7 +9,10 @@ export default (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     userId: DataTypes.STRING,
-    addressId: DataTypes.STRING,
+    addressId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
     orderDate: DataTypes.DATE,
     currentStatus: DataTypes.STRING,
     priceTotal: DataTypes.STRING,
@@ -24,15 +27,19 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'userId',
       constraints: false
     });
+    order.belongsTo(db.address, {
+      foreignKey: 'addressId',
+      constraints: false
+    });
     order.hasMany(db.orderItem, {
       foreignKey: 'orderId',
       constraints: false
     });
-    order.hasOne(db.address);
     order.hasMany(db.orderStatusHistory, {
       foreignKey: 'orderId',
       constraints: false
     });
-  }
+  };
+
   return order;
 };

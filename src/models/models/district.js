@@ -22,7 +22,7 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'districtId',
       constraints: false
     });
-    district.belongsTo(db.address, {
+    district.hasOne(db.address, {
       foreignKey: 'districtId',
       constraints: false
     });
