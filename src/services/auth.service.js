@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import dotenv from "dotenv";
 import { v4 as UUIDV4 } from 'uuid';
 import { tokenServices, userServices } from '../services/index.js';
+import { UserRole } from "../utils/enum.js";
 dotenv.config();
 
 const SALT_ROUNDS = 10;
@@ -23,7 +24,7 @@ const createUser = async (userData) => {
     ...userData,
     id: UUIDV4(),
     password: await bcrypt.hash(userData.password, SALT_ROUNDS),
-    role: 'CUSTOMER',
+    role: UserRole.CUSTOMER,
     status: 'INACTIVE'
   });
 

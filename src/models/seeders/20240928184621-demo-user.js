@@ -12,7 +12,7 @@ export default {
       password: '$2y$10$Yt.Sr23ztKnR9mpSDWiTlOVrtUqfHnBL78GzRWWS2aNxAMOyH/po6', //Hongdiem@123
       phoneNumber: '0353905691',
       gender: false,
-      role: 'ADMIN',
+      role: 'admin',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -25,7 +25,7 @@ export default {
       password: '$2y$10$GG1tU1gW604acjiqVox9teUzSWWJnVTwbkz5vP1/6ju9W4bSGsrrm', //Phuongha@123
       phoneNumber: '0353905692',
       gender: false,
-      role: 'STAFF',
+      role: 'staff',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -38,7 +38,7 @@ export default {
       password: '$2y$10$EEkNLeeVwtAZmMnN2s8Zl.Z28tvzfYM6WUa4Y703QdwbVgVZmP4Oe', //Yanni@123
       phoneNumber: '0353903691',
       gender: false,
-      role: 'CUSTOMER',
+      role: 'customer',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

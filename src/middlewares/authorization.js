@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { UserRole } from "../utils/enum.js";
 
 // const isTokenValid = (req, res, next) => {
 //     const token = req.headers.authorization.split(" ")[1];
@@ -11,21 +12,21 @@ import jwt from "jsonwebtoken";
 // }
 
 const isAdmin = (req, res, next) => {
-    if (req.user.dataValues.role !== "ADMIN") {
+    if (req.user.dataValues.role !== UserRole.ADMIN) {
         return res.status(403).json({ message: "Forbidden" });
     }
     next();
 }
 
 const isCustomer = (req, res, next) => {
-    if (req.user.dataValues.role !== "CUSTOMER") {
+    if (req.user.dataValues.role !== UserRole.CUSTOMER) {
         return res.status(403).json({ message: "Forbidden" });
     }
     next();
 }
 
 const isStaff = (req, res, next) => {
-    if (req.user.dataValues.role !== "STAFF") {
+    if (req.user.dataValues.role !== UserRole.STAFF) {
         return res.status(403).json({ message: "Forbidden" });
     }
     next();

@@ -5,9 +5,9 @@ export const AccountStatus = Object.freeze({
 });
 
 export const UserRole = Object.freeze({
-    ADMIN: 'ADMIN',
-    STAFF: 'STAFF',
-    CUSTOMER: 'CUSTOMER'
+    ADMIN: 'admin',
+    STAFF: 'staff',
+    CUSTOMER: 'customer'
 });
 
 export const Gender = Object.freeze({

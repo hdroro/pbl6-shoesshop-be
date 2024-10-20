@@ -47,6 +47,7 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
     order: orderClause,
     ...(attributeInclude.length > 0 ? { attributes: attributeInclude } : {}),
     ...(include.length > 0 ? { include } : {}),
+    distinct: true
   });
 
   const totalResults = count;

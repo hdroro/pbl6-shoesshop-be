@@ -5,12 +5,25 @@ import httpStatus from 'http-status';
 import { Op } from 'sequelize';
 import { v4 as UUIDV4 } from 'uuid';
 
-const getAllProductsByCondition = async (filter, options) => {
-    const include = [{
-        model: db.category,
-        required: false,
-        attributes: ['name']
-    }];
+const getAllProductsByCondition = async (categoryId, filter, options) => {
+    const include = [
+        {
+            model: db.category,
+            required: false,
+            attributes: ['name'],
+            ...(categoryId ? { where: { id: categoryId } } : {})
+        }
+    ];
+
+    if (categoryId) {
+        include.push({
+            model: db.productAttribute,
+            attributes: ['size', 'color', 'quantity'],
+            where: { isDeleted: false },
+            required: false,
+        });
+    };
+
     const products = await paginate(db.product, filter, options, include);
     const productResponse = products.results.map(item => {
         const plainItem = item.get({ plain: true });
@@ -208,7 +221,7 @@ const editProduct = async (productId, productBody) => {
 
         for (const item of productBody.listProductItems) {
             const existingProductAttribute = item?.id ? await db.productAttribute.findOne({ where: { id: item.id, productId } }) : null;
-            
+
             if (existingProductAttribute) {
                 itemsToUpdate.push({
                     ...item,
@@ -232,12 +245,12 @@ const editProduct = async (productId, productBody) => {
                 sellingPrice: item.sellingPrice,
                 productAttributeId: item.id,
             }));
-        
+
             if (updateQueries.length > 0) {
                 const caseOriginPrice = updateQueries.map((item) => `WHEN "productAttributeId" = '${item.productAttributeId}' THEN ${item.originPrice}`).join(" ");
                 const caseSellingPrice = updateQueries.map((item) => `WHEN "productAttributeId" = '${item.productAttributeId}' THEN ${item.sellingPrice}`).join(" ");
                 const ids = updateQueries.map(item => `'${item.productAttributeId}'`).join(", ");
-        
+
                 const query = `
                     UPDATE fluctuation_price_histories
                     SET "originPrice" = CASE ${caseOriginPrice} END,
@@ -246,14 +259,14 @@ const editProduct = async (productId, productBody) => {
                     WHERE "productAttributeId" IN (${ids})
                     AND "productAttributeId" IS NOT NULL;
                 `;
-        
+
                 await db.sequelize.query(query, { transaction });
             }
         };
 
         if (itemsToCreate.length > 0) {
             await db.productAttribute.bulkCreate(itemsToCreate, { transaction });
-            
+
             const validPriceHistoryItemsForCreate = itemsToCreate.map(item => ({
                 id: UUIDV4(),
                 productAttributeId: item.id,
