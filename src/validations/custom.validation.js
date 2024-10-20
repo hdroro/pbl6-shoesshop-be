@@ -26,9 +26,17 @@ const validateGreaterDate = (value, helpers) => {
   return value;
 };
 
+const validatePrimaryThumbnail = (value, helpers) => {
+  const primaryCount = value.filter((item) => item.isPrimary === true).length;
+  if (primaryCount !== 1) {
+    return helpers.message('There must be exactly one thumbnail with isPrimary: true');
+  }
+  return value;
+};
 
 export default {
   password,
   validateFutureDate,
-  validateGreaterDate
+  validateGreaterDate,
+  validatePrimaryThumbnail
 };

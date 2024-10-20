@@ -27,9 +27,25 @@ const getProductByName = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(products);
 });
 
+const createNewProduct = catchAsync(async (req, res) => {
+  await productServices.createNewProduct(req.body);
+  res.status(httpStatus.OK).send({
+    message: `This product created successfully`,
+  });
+});
+
+const editProduct = catchAsync(async (req, res) => {
+  await productServices.editProduct(req.params.productId, req.body);
+  res.status(httpStatus.OK).send({
+    message: `This product updated successfully`,
+  });
+});
+
 export default {
   getAllProducts,
   deleteProduct,
   getProductDetail,
-  getProductByName
+  getProductByName,
+  createNewProduct,
+  editProduct
 };

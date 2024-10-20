@@ -36,7 +36,7 @@ const paginate = async function (model, filter = {}, options = {}, include = [],
     const order = options.order ? options.order.toUpperCase() : 'ASC';
     orderClause.push([sortBy, order]);
   } else {
-    orderClause.push(['createdAt', 'ASC']);
+    orderClause.push(['createdAt', 'DESC']);
   };
 
   const { count, rows } = await model.findAndCountAll({
