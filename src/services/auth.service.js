@@ -15,8 +15,8 @@ const isPasswordMatch = async function (password, hashPassword) {
 
 const createUser = async (userData) => {
 
-  if (await db.user.findOne({ where: { email: userData.email }}) || await db.user.findOne({ where: { username: userData.username }})) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email or username already taken");
+  if (await db.user.findOne({ where: { email: userData.email }})) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   };
 
   const savedUser = await db.user.create({
@@ -45,7 +45,7 @@ const login = async (userData) => {
   });
 
   if (!foundUser || !(await isPasswordMatch(userData.password, foundUser?.password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Incorrect username or password");
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Incorrect password");
   }
   const user = foundUser.get({ plain: true });
   delete user.password;

@@ -17,7 +17,6 @@ const updateStatusRequest = {
     }),
     body: Joi.object().keys({
         type: Joi.string().trim().valid('ACCEPTED', 'REJECTED').required(),
-        username: Joi.string().trim().allow('').optional(),
         firstName: Joi.string().trim().allow('').optional(),
         lastName: Joi.string().trim().allow('').optional(),
         phoneNumber: Joi.string().pattern(phoneNumberPattern).optional(),

@@ -31,10 +31,16 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(staffs);
 });
 
+const createStaff = catchAsync(async (req, res) => {
+  const staff = await staffServices.createStaff(req.body);
+  res.status(httpStatus.OK).send(staff);
+});
+
 export default {
   getStaffDetail,
   getAllStaffs,
   deleteStaff,
   requestEditProfile,
-  resetPassword
+  resetPassword,
+  createStaff
 };

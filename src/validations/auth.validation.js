@@ -1,12 +1,11 @@
 import Joi from 'joi';
 import { Gender } from '../utils/enum.js'
 
-const passwordPattern = new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~`-])(?=.*[a-zA-Z]).{8,}$/);
+const passwordPattern = new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~`-])(?=.*[a-z])(?=.*[A-Z])\S{8,}$/);
 
 const register = {
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    username: Joi.string().required(),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     gender: Joi.string().valid(Gender.MALE, Gender.FEMALE).required(),

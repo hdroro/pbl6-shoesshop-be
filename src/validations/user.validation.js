@@ -3,7 +3,6 @@ import Joi from 'joi';
 const createUser = {
   body: Joi.object().keys({
     id: Joi.string().uuid().required(),
-    username: Joi.string().required(),
     firstName: Joi.string(),
     lastName: Joi.string(),
     avatarLink: Joi.string(),

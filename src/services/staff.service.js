@@ -26,7 +26,7 @@ const getStaffDetail = async (staffId) => {
     const staff = await db.user.findOne({
         where: {
             id: staffId,
-            role: UserRole.STAFF 
+            role: UserRole.STAFF
         },
         attributes: {
             exclude: ['password', 'role']
@@ -37,7 +37,7 @@ const getStaffDetail = async (staffId) => {
 };
 
 const deleteStaff = async (staffId) => {
-    const staff = await db.user.findOne({ where: { id: staffId, role: UserRole.STAFF, status: { [Op.ne]:  AccountStatus.DELETED } }});
+    const staff = await db.user.findOne({ where: { id: staffId, role: UserRole.STAFF, status: AccountStatus.ACTIVE } });
     if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
     if (staff.status === AccountStatus.DELETED) throw new ApiError(httpStatus.BAD_REQUEST, 'Staff already deleted');
 
@@ -46,10 +46,10 @@ const deleteStaff = async (staffId) => {
 };
 
 const requestEditProfile = async (staffBody) => {
-    const staff = await db.user.findOne({ where: { id: staffBody.id, role: UserRole.STAFF, status: { [Op.ne]: AccountStatus.DELETED } } });
+    const staff = await db.user.findOne({ where: { id: staffBody.id, role: UserRole.STAFF, status: AccountStatus.ACTIVE } });
     if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
 
-    const request = await db.request.findOne({ where: { userId: staffBody.id, status: requestType.PENDING }});
+    const request = await db.request.findOne({ where: { userId: staffBody.id, status: requestType.PENDING } });
     if (request) throw new ApiError(httpStatus.BAD_REQUEST, 'Cannot request an edit when the latest request has not been processed')
 
     const requestSaved = await db.request.create({
@@ -62,10 +62,10 @@ const requestEditProfile = async (staffBody) => {
 };
 
 const resetPassword = async (groupId, staffBody) => {
-    const staff = await db.user.findOne({ where: { id: groupId.staffId, role: UserRole.STAFF, status: AccountStatus.ACTIVE }});
+    const staff = await db.user.findOne({ where: { id: groupId.staffId, role: UserRole.STAFF, status: AccountStatus.ACTIVE } });
     if (!staff) throw new ApiError(httpStatus.NOT_FOUND, 'Staff not found!');
 
-    const admin = await db.user.findOne({ where: { id: groupId.adminId, role: UserRole.ADMIN }});
+    const admin = await db.user.findOne({ where: { id: groupId.adminId, role: UserRole.ADMIN } });
     if (!admin) throw new ApiError(httpStatus.NOT_FOUND, 'Admin not found!');
 
     const isPasswordMatch = await bcrypt.compare(staffBody.adminPassword, admin.password);
@@ -77,7 +77,23 @@ const resetPassword = async (groupId, staffBody) => {
 
     await db.user.update({
         password: await bcrypt.hash(newPassword, SALT_ROUNDS)
-    }, { where: { id: groupId.staffId }});
+    }, { where: { id: groupId.staffId } });
+};
+
+const createStaff = async (staffBody) => {
+    if (await db.user.findOne({ where: { email: staffBody.email }})) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    };
+
+    const savedUser = await db.user.create({
+        ...staffBody,
+        id: UUIDV4(),
+        password: await bcrypt.hash(staffBody.password, SALT_ROUNDS),
+        role: UserRole.STAFF,
+        status: AccountStatus.ACTIVE
+    });
+
+    return savedUser
 };
 
 export default {
@@ -85,6 +101,6 @@ export default {
     getStaffDetail,
     deleteStaff,
     requestEditProfile,
-    resetPassword
+    resetPassword,
+    createStaff
 };
-  
