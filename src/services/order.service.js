@@ -3,6 +3,7 @@ import db from "../models/models/index.js";
 import paginate from './plugins/paginate.plugin.js';
 import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
+import { UserRole } from "../utils/enum.js";
 
 const getAllOrders = async (filter, options) => {
   const include = [
@@ -13,7 +14,7 @@ const getAllOrders = async (filter, options) => {
         [Op.or]: [
           { firstName: { [Op.iLike]: `%${filter.name?.trim() || ''}%` } },
           { lastName: { [Op.iLike]: `%${filter.name?.trim() || ''}%` } }
-      ]
+        ]
       }
     },
   ];
@@ -107,8 +108,73 @@ const getOrderDetail = async (id, options) => {
   return response;
 };
 
+const convertOrderData = ({ results, page, limit, totalPages, totalResults }) => ({
+  results: results.map(({ id, orderDate, priceTotal, finalPrice, currentStatus, createdAt, updatedAt, orderItems }) => ({
+    id,
+    orderDate,
+    priceTotal,
+    finalPrice,
+    currentStatus,
+    createdAt,
+    updatedAt,
+    orderItems: orderItems.map(({ quantity, productAttribute: { size, color, product: { name: productName } } }) => ({
+      quantity,
+      size,
+      color,
+      productName
+    }))
+  })),
+  page,
+  limit,
+  totalPages,
+  totalResults
+});
+
+const getOrdersByCustomer = async (filter, options, id) => {
+  const customer = await db.user.findOne({
+    where: {
+      id: id.customerId,
+      role: UserRole.CUSTOMER
+    }
+  });
+
+  if (!customer) throw new ApiError(httpStatus.NOT_FOUND, 'Customer not found!');
+
+  const include = [
+    {
+      model: db.orderItem,
+      attributes: ['quantity'],
+      required: false,
+      include: {
+        model: db.productAttribute,
+        attributes: ['id', 'size', 'color'],
+        include: {
+          model: db.product,
+          attributes: ['name']
+        }
+      }
+    }
+  ];
+
+  const dateFilter = {};
+  if (filter.fromDate) {
+    dateFilter.fromDate = filter.fromDate;
+  }
+  if (filter.toDate) {
+    dateFilter.toDate = filter.toDate;
+    dateFilter.toDate.setHours(23, 59, 59, 999);
+  }
+
+  const selectedAttributes = ['id', 'orderDate', 'priceTotal', 'finalPrice', 'currentStatus', 'createdAt', 'updatedAt'];
+  const searchField = ['orderDate'];
+  const orderData = await paginate(db.order, { ...dateFilter, userId: customer.id }, options, include, searchField, selectedAttributes);
+
+  return convertOrderData(orderData);
+};
+
 
 export default {
   getAllOrders,
-  getOrderDetail
+  getOrderDetail,
+  getOrdersByCustomer
 }

@@ -19,7 +19,7 @@ const validateFutureDate = (value, helpers) => {
 };
 
 const validateGreaterDate = (value, helpers) => {
-  const appliedDate = helpers.state.ancestors[0].appliedDate;
+  const appliedDate = helpers.state.ancestors[0].appliedDate || helpers.state.ancestors[0].fromDate;
   if (new Date(value) < new Date(appliedDate)) {
       return helpers.error('date.greater', { message: 'Date To must be greater than or equal to Applied Date' });
   }

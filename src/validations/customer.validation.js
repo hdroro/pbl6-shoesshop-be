@@ -12,6 +12,13 @@ const getAllCustomers = {
     })
 };
 
+const getCustomerDetail = {
+    params: Joi.object().keys({
+        customerId: Joi.string().guid({ version: ['uuidv4'] }).required()
+    }),
+};
+
 export default {
-    getAllCustomers
+    getAllCustomers,
+    getCustomerDetail
 }
