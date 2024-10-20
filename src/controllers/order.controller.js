@@ -17,7 +17,16 @@ const getOrderDetail = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(orders);
 });
 
+const getOrdersByCustomer = catchAsync(async (req, res) => {
+  const id = pick(req.params, ['customerId'])
+  const filter = pick(req.query, ['fromDate', 'toDate']);
+  const options = pick(req.query, ['sortBy', 'order', 'limit', 'page']);
+  const orders = await orderServices.getOrdersByCustomer(filter, options, id);
+  res.status(httpStatus.OK).send(orders);
+});
+
 export default {
   getAllOrders,
-  getOrderDetail
+  getOrderDetail,
+  getOrdersByCustomer
 };
