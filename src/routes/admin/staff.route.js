@@ -13,6 +13,12 @@ router.get(
     staffController.getAllStaffs
 );
 
+router.post(
+    "/",
+    validate(staffValidation.createStaff),
+    staffController.createStaff
+);
+
 router.get(
     "/:id",
     validate(staffValidation.getStaffDetail),

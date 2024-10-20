@@ -5,7 +5,6 @@ export default {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('users', [{
       id: 'a79154fe-4fb0-4699-8118-8845283c0045',
-      username: 'hdroro',
       firstName: 'Diem',
       lastName: 'Nguyen Hong',
       avatarLink: '',
@@ -19,7 +18,6 @@ export default {
     },
     {
       id: '2df63061-a0b1-4d4d-a05f-77f6216371d7',
-      username: 'harah',
       firstName: 'Ha',
       lastName: 'Nguyen Phuong',
       avatarLink: '',
@@ -33,7 +31,6 @@ export default {
     },
     {
       id: '1521e47b-69d9-4fc7-8502-6317acb132ac',
-      username: 'yanni',
       firstName: 'Nhi',
       lastName: 'Le Nhi',
       avatarLink: '',

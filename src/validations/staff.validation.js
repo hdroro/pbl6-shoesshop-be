@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { AccountStatus, Gender } from '../utils/enum.js';
 
 const phoneNumberPattern = new RegExp(/^[0-9]{10}$/);
+const passwordPattern = new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~`-])(?=.*[a-z])(?=.*[A-Z])\S{8,}$/);
 
 const getAllStaffs = {
     query: Joi.object().keys({
@@ -29,7 +30,6 @@ const deleteStaff = {
 const requestEditProfile = {
     body: Joi.object().keys({
         id: Joi.string().guid({ version: ['uuidv4'] }).required(),
-        username: Joi.string().trim().required(),
         firstName: Joi.string().trim().required(),
         lastName: Joi.string().trim().required(),
         phoneNumber: Joi.string().pattern(phoneNumberPattern).optional(),
@@ -49,10 +49,21 @@ const resetPassword = {
     })
 };
 
+const createStaff = {
+    body: Joi.object().keys({
+        email: Joi.string().email().required(),
+        password: Joi.string().pattern(passwordPattern).required(),
+        confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+        firstName: Joi.string().trim().optional(),
+        lastName: Joi.string().trim().optional(),
+    })
+};
+
 export default {
     getAllStaffs,
     getStaffDetail,
     deleteStaff,
     requestEditProfile,
-    resetPassword
+    resetPassword,
+    createStaff
 }

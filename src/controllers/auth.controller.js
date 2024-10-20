@@ -10,7 +10,6 @@ const register = catchAsync(async (req, res) => {
     user: {
       id: user.id,
       email: user.email,
-      username: user.username,
       role: user.role,
       status: user.status
     }, 

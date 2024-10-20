@@ -10,8 +10,8 @@ const getAllRequests = async (filter, options) => {
         model: db.request,
         ...(status && { where: { status } })
     }];
-    const searchFields = ['username', 'firstName', 'lastName'];
-    const attributeInclude = ['id', 'username', 'firstName', 'lastName' ];
+    const searchFields = ['firstName', 'lastName'];
+    const attributeInclude = ['id', 'firstName', 'lastName' ];
     const requests = await paginate(db.user, { keyword: keyword || '', role: UserRole.STAFF }, options, include, searchFields, attributeInclude);
     const requestResponse = requests.results.map(request => {
         const plainRequest = request.get({ plain: true });
@@ -38,9 +38,9 @@ const updateStatusRequest = async (requestId, requestBody) => {
     const updatedRequest = await db.request.findByPk(requestId);
 
     if (updatedRequest.status === requestType.ACCEPTED) {
-        const { username, firstName, lastName, phoneNumber, dateOfBirth } = requestBody;
+        const { firstName, lastName, phoneNumber, dateOfBirth } = requestBody;
         await db.user.update(
-            { username, firstName, lastName, phoneNumber, dateOfBirth }, 
+            { firstName, lastName, phoneNumber, dateOfBirth }, 
             { where: { id: updatedRequest.userId } }
         );
     }

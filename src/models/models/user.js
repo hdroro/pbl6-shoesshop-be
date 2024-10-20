@@ -8,7 +8,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    username: DataTypes.STRING,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     avatarLink: DataTypes.STRING,

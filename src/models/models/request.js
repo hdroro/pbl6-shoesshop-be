@@ -14,7 +14,6 @@ export default (sequelize, DataTypes) => {
     status: {
         type: DataTypes.STRING,
     },
-    username: DataTypes.STRING,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
