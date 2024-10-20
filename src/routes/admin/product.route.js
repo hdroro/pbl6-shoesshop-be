@@ -37,4 +37,10 @@ router.patch(
   productController.editProduct
 );
 
+router.get(
+  "/category/:categoryId",
+  validate(productValidation.getProductsByCategoryId),
+  productController.getAllProductsByCategoryId
+);
+
 export default router;

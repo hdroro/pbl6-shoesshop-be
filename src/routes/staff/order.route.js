@@ -19,7 +19,6 @@ router.get(
   orderController.getOrderDetail
 );
 
-
 router.get(
   "/customer/:customerId",
   validate(orderValidation.getOrdersByCustomer),

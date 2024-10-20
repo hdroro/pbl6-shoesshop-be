@@ -19,7 +19,7 @@ const getAllReceiptNotes = async (filter, options) => {
                         { lastName: { [Op.iLike]: `%${filter.name?.trim() || ''}%` } }
                     ]
                 },
-                { role: UserRole.STAFF, status: { [Op.ne]:  AccountStatus.DELETED } }
+                { role: UserRole.STAFF, status: AccountStatus.ACTIVE }
             ]
         }
     }];

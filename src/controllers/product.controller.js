@@ -6,7 +6,7 @@ import pick from '../utils/pick.js';
 const getAllProducts = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'categoryId']);
   const options = pick(req.query, ['sortBy','order', 'limit', 'page']);
-  const products = await productServices.getAllProductsByCondition({...filter, isDeleted: false}, options);
+  const products = await productServices.getAllProductsByCondition(null, {...filter, isDeleted: false}, options);
   res.status(httpStatus.OK).send(products);
 });
 
@@ -41,11 +41,19 @@ const editProduct = catchAsync(async (req, res) => {
   });
 });
 
+const getAllProductsByCategoryId = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name']);
+  const options = pick(req.query, ['sortBy','order', 'limit', 'page']);
+  const products = await productServices.getAllProductsByCondition(req.params.categoryId, {...filter, isDeleted: false}, options);
+  res.status(httpStatus.OK).send(products);
+});
+
 export default {
   getAllProducts,
   deleteProduct,
   getProductDetail,
   getProductByName,
   createNewProduct,
-  editProduct
+  editProduct,
+  getAllProductsByCategoryId
 };

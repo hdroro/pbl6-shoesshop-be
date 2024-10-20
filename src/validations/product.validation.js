@@ -4,7 +4,20 @@ import { ProductTarget } from '../utils/enum.js';
 const getProducts = {
   query: Joi.object().keys({
     name: Joi.string().trim().max(30).optional(),
-    categoryId: Joi.number().integer().positive().optional(),
+    categoryId: Joi.string().guid({ version: ['uuidv4'] }).optional(),
+    sortBy: Joi.string().valid('name', 'price', 'createdAt', 'updatedAt').optional(),
+    order: Joi.string().valid('asc', 'desc').optional(),
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).max(100).default(20)
+  })
+};
+
+const getProductsByCategoryId = {
+  params: Joi.object().keys({
+    categoryId: Joi.string().guid({ version: ['uuidv4'] }).required()
+  }),
+  query: Joi.object().keys({
+    name: Joi.string().trim().max(30).optional(),
     sortBy: Joi.string().valid('name', 'price', 'createdAt', 'updatedAt').optional(),
     order: Joi.string().valid('asc', 'desc').optional(),
     page: Joi.number().integer().min(1).default(1),
@@ -101,6 +114,7 @@ const editProduct = {
 
 export default {
   getProducts,
+  getProductsByCategoryId,
   deleteProduct,
   getProductDetail,
   getProductByName,
