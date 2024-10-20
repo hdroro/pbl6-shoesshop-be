@@ -41,3 +41,8 @@ export const VoucherStatus = Object.freeze({
     EXPIRED: 'EXPIRED',
     DELETED: 'DELETED',
 });
+
+export const ProductTarget = Object.freeze({
+    WOMEN: 'WOMEN',
+    MEN: 'MEN'
+});

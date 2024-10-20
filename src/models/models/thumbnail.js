@@ -8,7 +8,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    productAttributeId: DataTypes.STRING,
+    productId: DataTypes.STRING,
     thumbnail: DataTypes.TEXT,
     isPrimary: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
