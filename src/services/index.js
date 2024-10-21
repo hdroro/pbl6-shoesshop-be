@@ -9,3 +9,4 @@ export { default as staffServices } from './staff.service.js';
 export { default as voucherServices } from './voucher.service.js';
 export { default as receiptNoteServices } from './receipt_note.service.js';
 export { default as orderServices } from './order.service.js';
+export { default as stockServices } from './stock.service.js';
