@@ -12,6 +12,7 @@ const password = (value, helpers) => {
 
 const validateFutureDate = (value, helpers) => {
   const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
   if (new Date(value) < currentDate) {
       return helpers.error('any.invalid', { message: 'Date From must be greater than or equal to the current date' });
   }

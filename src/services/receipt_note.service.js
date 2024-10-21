@@ -126,6 +126,13 @@ const createReceiptNote = async (receiptNoteItemBody) => {
             receiptNoteItemBody.receiptNoteItems.map(async (item) => {
                 const productAttribute = await db.productAttribute.findByPk(item.productAttributeId, { transaction });
                 if (productAttribute) {
+                    const currentQuantity = productAttribute.get({ plain: true })?.quantity ?? 0;
+                    const updatedQuantity = currentQuantity + item.quantity;
+
+                    await db.productAttribute.update(
+                        { quantity: updatedQuantity },
+                        { where: { id: item.productAttributeId }, transaction }
+                    );
                     return {
                         ...item,
                         id: UUIDV4(),
